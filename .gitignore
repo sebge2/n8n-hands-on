@@ -44,4 +44,4 @@ terraform.rc
 # planout
 
 
-aws/variables.tf
+terraform.tfvars
