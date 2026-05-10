@@ -7,7 +7,7 @@ output "public_ip" {
 }
 
 output "ssh_command" {
-  value     = "ssh -i ${var.public_key_path} ec2-user@${aws_instance.n8n.public_ip}"
+  value     = "ssh -i ${var.private_key_path} ubuntu@${aws_instance.n8n.public_ip}"
 }
 
 # output "n8n_dns_record" {

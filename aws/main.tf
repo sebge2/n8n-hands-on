@@ -86,15 +86,15 @@ resource "tls_private_key" "n8n-keypair" {
 # Save the private key to a local file
 resource "local_file" "private_key" {
   content  = tls_private_key.n8n-keypair.private_key_pem
-  filename        = var.private_key_path
-  file_permission = "0600"
+  filename        = pathexpand(var.private_key_path)
+  file_permission = "0400"
 }
 
 # Save the public key to a local file
 resource "local_file" "public_key" {
   content  = tls_private_key.n8n-keypair.public_key_pem
-  filename        = var.public_key_path
-  file_permission = "0644"
+  filename        = pathexpand(var.public_key_path)
+  file_permission = "0400"
 }
 
 resource "aws_key_pair" "n8n_key" {
@@ -110,7 +110,7 @@ resource "aws_security_group" "n8n_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.my_ip_cidr]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
