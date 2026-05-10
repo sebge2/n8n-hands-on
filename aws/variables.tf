@@ -1,26 +1,56 @@
+variable "default_resource_name" {
+  default = "n8n-hands-on"
+}
+
+variable "tags" {
+  description = "Tags to add on resources"
+  default     = {
+    Name : "n8n-hands-on"
+  }
+  type = map(string)
+}
+
 variable "aws_region" {
+  description = "The name of the AWS region"
+  default     = "eu-central-1"
+  type        = string
+}
+
+variable "aws_main_availability_zone" {
+  description = "The name of the main AWS region"
+  default     = "a"
+  type        = string
+}
+
+variable "my_ip_cidr" {
   type    = string
-  default = "eu-central-1"
+  default = "10.0.0.0/16"
 }
 
 variable "instance_type" {
+  description = "The EC2 instance type of nodes"
+  default     = "t3.medium"
+}
+
+variable "public_key_path" {
   type    = string
-  default = "t3.medium"
+  default = "~/.ssh/n8n.pem"
+}
+
+variable "private_key_path" {
+  type    = string
+  default = "~/.ssh/n8n.key"
+}
+
+variable "local_domain" {
+  description = "Local DNS domain"
+  type    = string
+  default = "n8n.local"
 }
 
 variable "key_name" {
   type        = string
   description = "SSH key pair name"
-}
-
-variable "public_key_path" {
-  type    = string
-  default = "~/.ssh/id_rsa.pub"
-}
-
-variable "my_ip_cidr" {
-  type    = string
-  default = "0.0.0.0/0"
 }
 
 variable "domain_name" {

@@ -2,13 +2,109 @@ provider "aws" {
   region = var.aws_region
 }
 
+resource "aws_vpc" "main" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+  tags                 = var.tags
+}
+
+resource "aws_internet_gateway" "gateway" {
+  vpc_id = aws_vpc.main.id
+  tags   = var.tags
+}
+
+resource "aws_eip" "eip" {
+  depends_on = [aws_internet_gateway.gateway]
+}
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.eip.id
+  subnet_id     = element(aws_subnet.public_subnet.*.id, 0)
+  depends_on    = [aws_internet_gateway.gateway]
+  tags          = var.tags
+}
+
+resource "aws_subnet" "public_subnet" {
+  cidr_block        = var.my_ip_cidr
+  vpc_id            = aws_vpc.main.id
+  availability_zone = "${var.aws_region}${var.aws_main_availability_zone}"
+  tags              = var.tags
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+  tags   = var.tags
+}
+
+resource "aws_route" "public_internet_gateway" {
+  route_table_id         = aws_route_table.public.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.gateway.id
+}
+
+resource "aws_route_table_association" "public" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_vpc_dhcp_options" "local-domain" {
+  domain_name          = var.local_domain
+  domain_name_servers  = ["AmazonProvidedDNS"]
+
+  tags = var.tags
+}
+
+resource "aws_vpc_dhcp_options_association" "local_dns_resolver" {
+  vpc_id          = aws_vpc.main.id
+  dhcp_options_id = aws_vpc_dhcp_options.local-domain.id
+}
+
+resource "aws_security_group" "ssh" {
+  vpc_id      = aws_vpc.main.id
+  name        = "${var.default_resource_name}-ssh"
+  description = "Security group that allows SSH connections"
+
+  ingress {
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+  }
+
+  tags = var.tags
+}
+
+# Generate an RSA private key
+resource "tls_private_key" "n8n-keypair" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+# Save the private key to a local file
+resource "local_file" "private_key" {
+  content  = tls_private_key.n8n-keypair.private_key_pem
+  filename        = var.private_key_path
+  file_permission = "0600"
+}
+
+# Save the public key to a local file
+resource "local_file" "public_key" {
+  content  = tls_private_key.n8n-keypair.public_key_pem
+  filename        = var.public_key_path
+  file_permission = "0644"
+}
+
 resource "aws_key_pair" "n8n_key" {
   key_name   = var.key_name
-  public_key = file(var.public_key_path)
+  public_key = tls_private_key.n8n-keypair.public_key_openssh
 }
 
 resource "aws_security_group" "n8n_sg" {
   name = "n8n-sg"
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port   = 22
@@ -74,6 +170,8 @@ resource "aws_instance" "n8n" {
   instance_type          = var.instance_type
   key_name               = aws_key_pair.n8n_key.key_name
   vpc_security_group_ids = [aws_security_group.n8n_sg.id]
+  subnet_id = aws_subnet.public_subnet.id
+  associate_public_ip_address = true
 
   root_block_device {
     volume_size           = 15
@@ -86,16 +184,16 @@ resource "aws_instance" "n8n" {
   }
 }
 
-data "aws_route53_zone" "main" {
-  name         = var.domain_name
-  private_zone = false
-}
-
-resource "aws_route53_record" "n8n_dns" {
-  count   = var.create_dns_record ? 1 : 0
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = "n8n.${var.domain_name}"
-  type    = "A"
-  ttl     = 300
-  records = [aws_instance.n8n.public_ip]
-}
+# data "aws_route53_zone" "main" {
+#   name         = var.domain_name
+#   private_zone = false
+# }
+#
+# resource "aws_route53_record" "n8n_dns" {
+#   count   = var.create_dns_record ? 1 : 0
+#   zone_id = data.aws_route53_zone.main.zone_id
+#   name    = "n8n.${var.domain_name}"
+#   type    = "A"
+#   ttl     = 300
+#   records = [aws_instance.n8n.public_ip]
+# }
