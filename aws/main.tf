@@ -174,7 +174,7 @@ resource "aws_instance" "n8n" {
   associate_public_ip_address = true
 
   root_block_device {
-    volume_size           = 15
+    volume_size           = 30
     delete_on_termination = true
   }
 
