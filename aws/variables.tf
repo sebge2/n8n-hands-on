@@ -55,7 +55,7 @@ variable "key_name" {
 
 variable "domain_name" {
   type        = string
-  description = "Root domain name (e.g. mydomain.com)"
+  description = "Fully-qualified domain name for the n8n instance and the AWS-managed hosted zone (e.g. n8n.example.com). Delegate this name from the parent zone via NS records."
 }
 
 variable "create_dns_record" {

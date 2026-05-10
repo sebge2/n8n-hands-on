@@ -184,16 +184,16 @@ resource "aws_instance" "n8n" {
   }
 }
 
-# data "aws_route53_zone" "main" {
-#   name         = var.domain_name
-#   private_zone = false
-# }
-#
-# resource "aws_route53_record" "n8n_dns" {
-#   count   = var.create_dns_record ? 1 : 0
-#   zone_id = data.aws_route53_zone.main.zone_id
-#   name    = "n8n.${var.domain_name}"
-#   type    = "A"
-#   ttl     = 300
-#   records = [aws_instance.n8n.public_ip]
-# }
+resource "aws_route53_zone" "main" {
+  name = var.domain_name
+  tags = var.tags
+}
+
+resource "aws_route53_record" "n8n_dns" {
+  count   = var.create_dns_record ? 1 : 0
+  zone_id = aws_route53_zone.main.zone_id
+  name    = var.domain_name
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.n8n.public_ip]
+}
