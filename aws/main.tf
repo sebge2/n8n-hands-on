@@ -154,10 +154,12 @@ data "aws_ami" "ubuntu" {
 
 locals {
   env_rendered = templatefile("${path.module}/templates/env.tmpl", {
-    POSTGRES_USER                  = var.basic_auth_user
-    POSTGRES_PASSWORD              = var.basic_auth_password
-    N8N_ENCRYPTION_KEY             = var.n8n_encryption_key
-    N8N_USER_MANAGEMENT_JWT_SECRET = var.n8n_user_management_jwt_secret
+    POSTGRES_USER                  = var.postgresql_user
+    POSTGRES_PASSWORD              = var.postgresql_password
+    N8N_INSTANCE_OWNER_EMAIL       = var.n8n_user_email
+    N8N_INSTANCE_OWNER_FIRST_NAME  = var.n8n_user_firstname
+    N8N_INSTANCE_OWNER_LAST_NAME   = var.n8n_user_lastname
+    N8N_INSTANCE_OWNER_PASSWORD_HASH   = var.n8n_user_password
   })
 
   user_data_rendered = templatefile("${path.module}/templates/user_data.sh.tmpl", {

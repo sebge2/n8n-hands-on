@@ -1,5 +1,19 @@
 # N8N Hands On
 
+## Troubleshooting
+
+### AWS Provisioning
+
+In case of an error on provisioning:
+````
+cat /var/log/cloud-init-output.log
+````
+
+
+### Hashing password
+````
+node -e 'const bcrypt = require("bcryptjs"); console.log(bcrypt.hashSync("nLtM8AvFyL5wJ3In", 10));'
+````
 
 ## Links
 

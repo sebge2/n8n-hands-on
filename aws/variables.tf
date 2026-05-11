@@ -62,19 +62,32 @@ variable "create_dns_record" {
   default = true
 }
 
-variable "basic_auth_user" {
-  type    = string
+variable "postgresql_user" {
+  type = string
   default = "admin"
 }
 
-variable "basic_auth_password" {
+variable "postgresql_password" {
   type = string
 }
 
-variable "n8n_encryption_key" {
+variable "n8n_user_firstname" {
   type = string
+  default = "John"
 }
 
-variable "n8n_user_management_jwt_secret" {
+variable "n8n_user_lastname" {
   type = string
+  default = "Doe"
+}
+
+variable "n8n_user_email" {
+  type = string
+  default = "john.doe@acme.com"
+}
+
+variable "n8n_user_password" {
+  type = string
+  description = "Password bcrypt encrypted (default: password)"
+  default = "$2a$12$TLw1.nLtM8AvFyL5wJ3In.2GQTdg6nuSHAd0gx4a33ZEupNehCXLC"
 }
