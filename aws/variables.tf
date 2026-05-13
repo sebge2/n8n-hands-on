@@ -91,3 +91,9 @@ variable "n8n_user_password" {
   description = "Password bcrypt encrypted (default: password)"
   default = "$2a$12$TLw1.nLtM8AvFyL5wJ3In.2GQTdg6nuSHAd0gx4a33ZEupNehCXLC"
 }
+
+variable "n8n_user_auth_token" {
+  type = string
+  description = "Token to authenticate the runner"
+  default = "UtBmyq60zzq6MlUvSRXEbRuky"
+}

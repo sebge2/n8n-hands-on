@@ -160,6 +160,7 @@ locals {
     N8N_INSTANCE_OWNER_FIRST_NAME  = var.n8n_user_firstname
     N8N_INSTANCE_OWNER_LAST_NAME   = var.n8n_user_lastname
     N8N_INSTANCE_OWNER_PASSWORD_HASH   = var.n8n_user_password
+    N8N_RUNNERS_AUTH_TOKEN          = var.n8n_user_auth_token
   })
 
   user_data_rendered = templatefile("${path.module}/templates/user_data.sh.tmpl", {
