@@ -8,7 +8,7 @@ networks:
   demo:
 
 x-n8n: &service-n8n
-  image: n8nio/n8n:1.111.0
+  image: n8nio/n8n:latest
   networks: ['demo']
   environment:
     - DB_TYPE=postgresdb
@@ -109,7 +109,7 @@ services:
         condition: service_completed_successfully
 
   task-runners:
-    image: n8nio/runners:1.111.0
+    image: n8nio/runners:latest
     container_name: n8n-runners
     environment:
       - N8N_RUNNERS_TASK_BROKER_URI=http://n8n:5679
