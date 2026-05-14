@@ -73,12 +73,13 @@ services:
     command:
       - "-c"
       - |
+        echo "Checking existing workflows"
+        n8n list:workflow --onlyId
         if [ -z "$(n8n list:workflow --onlyId)" ]; then
           n8n import:credentials --separate --input=/initial-data/credentials && \
           n8n import:workflow --separate --input=/initial-data/workflows
         else
           echo "Workflows exist, skipping import"
-          n8n list:workflow --onlyId
         fi
     volumes:
       - /home/ubuntu/n8n-data:/initial-data
