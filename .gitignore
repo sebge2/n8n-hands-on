@@ -46,3 +46,4 @@ terraform.rc
 
 terraform.tfvars
 .env
+n8n-data

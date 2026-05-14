@@ -31,6 +31,22 @@ https://docs.n8n.io/integrations/builtin/credentials/google/#oauth2-and-service-
 - Enable SSL
 
 
+## How To
+
+
+### Read Google Drive Result in Python
+
+````
+# Loop over input items and add a new field called 'my_new_field' to the JSON of each one
+for item in _items:
+  item["json"]["my_new_field"] = 1
+
+print(_items)
+  
+return _items
+````
+
+
 ## Links
 
 - [N8N on AWS](https://medium.com/@yakuphanbilgic3/deploying-self-hosted-n8n-on-aws-ec2-using-terraform-with-domain-name-ai-starter-kit-0e0df1c367fa)
