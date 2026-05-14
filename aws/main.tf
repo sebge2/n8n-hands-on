@@ -94,11 +94,13 @@ resource "local_file" "public_key" {
 resource "aws_key_pair" "n8n_key" {
   key_name   = var.key_name
   public_key = tls_private_key.n8n-keypair.public_key_openssh
+  tags = var.tags
 }
 
 resource "aws_security_group" "n8n_sg" {
   name = "n8n-sg"
   vpc_id = aws_vpc.main.id
+  tags = var.tags
 
   ingress {
     from_port   = 22
@@ -122,24 +124,25 @@ resource "aws_security_group" "n8n_sg" {
   }
 }
 
-resource "aws_security_group" "alb_sg" {
-  name = "alb_sg"
-  vpc_id = aws_vpc.main.id
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
+# resource "aws_security_group" "alb_sg" {
+#   name = "alb_sg"
+#   vpc_id = aws_vpc.main.id
+#   tags = var.tags
+#
+#   ingress {
+#     from_port   = 443
+#     to_port     = 443
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+#
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+# }
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -182,9 +185,7 @@ resource "aws_instance" "n8n" {
   }
 
   user_data = local.user_data_rendered
-  tags = {
-    Name = "n8n-server"
-  }
+  tags = var.tags
 }
 
 
