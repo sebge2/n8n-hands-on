@@ -92,6 +92,7 @@ services:
     restart: unless-stopped
     ports:
       - 5678:5678
+      - 5679:5679
     volumes:
       - n8n_storage:/home/node/.n8n
       - ./n8n/demo-data:/demo-data
@@ -102,6 +103,9 @@ services:
       - N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0
       - N8N_RUNNERS_AUTH_TOKEN=${N8N_RUNNERS_AUTH_TOKEN}
       - N8N_NATIVE_PYTHON_RUNNER=true
+      - N8N_PROTOCOL=https
+      - N8N_HOST=${DOMAIN_NAME}
+      - WEBHOOK_URL=https://${DOMAIN_NAME}/
     depends_on:
       postgres:
         condition: service_healthy
@@ -111,6 +115,7 @@ services:
   task-runners:
     image: n8nio/runners:latest
     container_name: n8n-runners
+    networks: ['demo']
     environment:
       - N8N_RUNNERS_TASK_BROKER_URI=http://n8n:5679
       - N8N_RUNNERS_AUTH_TOKEN=${N8N_RUNNERS_AUTH_TOKEN}
