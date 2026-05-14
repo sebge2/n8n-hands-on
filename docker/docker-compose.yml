@@ -20,6 +20,10 @@ x-n8n: &service-n8n
     - N8N_ENCRYPTION_KEY
     - N8N_USER_MANAGEMENT_JWT_SECRET
     - OLLAMA_HOST=${OLLAMA_HOST:-ollama:11434}
+  volumes:
+    - n8n_storage:/home/node/.n8n
+    - /home/ubuntu/n8n-data:/initial-data
+    - ./shared:/data/shared
   env_file:
     - path: .env
       required: true
@@ -81,8 +85,6 @@ services:
         else
           echo "Workflows exist, skipping import"
         fi
-    volumes:
-      - /home/ubuntu/n8n-data:/initial-data
     depends_on:
       postgres:
         condition: service_healthy
@@ -95,10 +97,6 @@ services:
     ports:
       - 5678:5678
       - 5679:5679
-    volumes:
-      - n8n_storage:/home/node/.n8n
-      - /home/ubuntu/n8n-data:/initial-data
-      - ./shared:/data/shared
     environment:
       - N8N_RUNNERS_ENABLED=true
       - N8N_RUNNERS_MODE=external
