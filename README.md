@@ -26,7 +26,6 @@ https://docs.n8n.io/integrations/builtin/credentials/google/#oauth2-and-service-
 ## Questions
 
 - Install Python3
-- Fix route 53
 - Fix password for owner not correct hash
 - Import workflow `docker exec -it -u node n8n n8n import:workflow --separate --input /yourfolder/here exec -it -u node n8n n8n update:workflow --all --active=true`
 - Enable SSL

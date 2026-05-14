@@ -22,9 +22,20 @@ variable "aws_main_availability_zone" {
   type        = string
 }
 
-variable "my_ip_cidr" {
+variable "aws_secondary_availability_zone" {
+  description = "The name of the secondary AWS region"
+  default     = "b"
+  type        = string
+}
+
+variable "main_ip_cidr" {
   type    = string
-  default = "10.0.0.0/16"
+  default = "10.0.1.0/24"
+}
+
+variable "secondary_ip_cidr" {
+  type    = string
+  default = "10.0.2.0/24"
 }
 
 variable "instance_type" {
