@@ -78,6 +78,7 @@ services:
           n8n import:workflow --separate --input=/initial-data/workflows
         else
           echo "Workflows exist, skipping import"
+          n8n list:workflow --onlyId
         fi
     volumes:
       - /home/ubuntu/n8n-data:/initial-data
