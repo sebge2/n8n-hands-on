@@ -158,14 +158,36 @@ resource "aws_instance" "n8n" {
   vpc_security_group_ids = [aws_security_group.n8n_sg.id]
   subnet_id = aws_subnet.main_public_subnet.id
   associate_public_ip_address = true
+  user_data = local.user_data_rendered
+  tags = var.tags
 
   root_block_device {
     volume_size           = 30
     delete_on_termination = true
   }
 
-  user_data = local.user_data_rendered
-  tags = var.tags
+  provisioner "remote-exec" {
+    inline = ["mkdir -p /home/ubuntu/n8n-data"]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = tls_private_key.n8n-keypair.private_key_pem
+      host        = self.public_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/../n8n-data"
+    destination = "/home/ubuntu/"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = tls_private_key.n8n-keypair.private_key_pem
+      host        = self.public_ip
+    }
+  }
 }
 
 
@@ -239,7 +261,7 @@ resource "aws_instance" "n8n" {
 #     cidr_blocks = ["0.0.0.0/0"]
 #   }
 # }
-# 
+#
 # resource "aws_security_group_rule" "allow_alb_to_ec2" {
 #   type                     = "ingress"
 #   from_port                = 5678

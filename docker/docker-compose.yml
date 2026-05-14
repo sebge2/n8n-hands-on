@@ -74,13 +74,13 @@ services:
       - "-c"
       - |
         if [ -z "$(n8n list:workflow --onlyId)" ]; then
-          n8n import:credentials --separate --input=/demo-data/credentials && \
-          n8n import:workflow --separate --input=/demo-data/workflows
+          n8n import:credentials --separate --input=/initial-data/credentials && \
+          n8n import:workflow --separate --input=/initial-data/workflows
         else
           echo "Workflows exist, skipping import"
         fi
     volumes:
-      - ./n8n/demo-data:/demo-data
+      - /home/ubuntu/n8n-data:/initial-data
     depends_on:
       postgres:
         condition: service_healthy
@@ -95,7 +95,7 @@ services:
       - 5679:5679
     volumes:
       - n8n_storage:/home/node/.n8n
-      - ./n8n/demo-data:/demo-data
+      - /home/ubuntu/n8n-data:/initial-data
       - ./shared:/data/shared
     environment:
       - N8N_RUNNERS_ENABLED=true
