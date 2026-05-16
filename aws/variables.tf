@@ -108,3 +108,9 @@ variable "n8n_user_auth_token" {
   description = "Token to authenticate the runner"
   default = "UtBmyq60zzq6MlUvSRXEbRuky"
 }
+
+variable "ollama_api_key" {
+  type = string
+  description = "Ollama API key"
+  default = "1c2380eaf2724f8fab4d1b977401ea94.IcevmedYWDohSYRkoWbawUhA"
+}
