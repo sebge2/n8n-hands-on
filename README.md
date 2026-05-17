@@ -42,7 +42,7 @@ n8n import:workflow --separate --input=/initial-data/workflows
 ### Backup DB
 
 ````
-sudo docker exec docker-postgres-1 pg_dump -U admin n8n > /home/ubuntu/dump.sql
+sudo docker exec postgres pg_dump -U admin n8n > /home/ubuntu/dump.sql
 ````
 
 Download dump:
