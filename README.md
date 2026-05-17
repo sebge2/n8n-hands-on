@@ -15,6 +15,41 @@ cat /var/log/cloud-init-output.log
 node -e 'const bcrypt = require("bcryptjs"); console.log(bcrypt.hashSync("nLtM8AvFyL5wJ3In", 10));'
 ````
 
+### Perform SQL Query
+
+List schema:
+````
+sudo docker exec -it  docker-postgres-1 psql -U admin -d n8n -c "SELECT schema_name FROM information_schema.schemata;"
+````
+
+List tables:
+````
+sudo docker exec -it docker-postgres-1 psql -U admin -d n8n -c "\dt public.*"
+````
+
+List all projects:
+````
+sudo docker exec -it docker-postgres-1 psql psql -U admin -d n8n -c "SELECT * FROM project;"
+````
+
+### Import from JSON
+
+````
+n8n import:credentials --separate --input=/initial-data/credentials
+n8n import:workflow --separate --input=/initial-data/workflows
+````
+
+### Backup DB
+
+````
+sudo docker exec docker-postgres-1 pg_dump -U admin n8n > /home/ubuntu/dump.sql
+````
+
+Download dump:
+````
+scp -i ~/.ssh/n8n.key ubuntu@adresse_ip_serveur:/home/ubuntu/dump.sql ~/dump.sql
+````
+
 
 ## Configuration
 
@@ -32,7 +67,6 @@ https://docs.n8n.io/integrations/builtin/credentials/google/#oauth2-and-service-
 
 
 ## How To
-
 
 ### Read Google Drive Result in Python
 
@@ -52,6 +86,3 @@ return _items
 - [N8N on AWS](https://medium.com/@yakuphanbilgic3/deploying-self-hosted-n8n-on-aws-ec2-using-terraform-with-domain-name-ai-starter-kit-0e0df1c367fa)
 - [Workflow new video then summarize](https://n8n.io/workflows/8145-automate-meeting-summaries-with-google-drive-gemini-ai-and-google-docs/)
 - [Workflow file drive](https://n8n.io/workflows/8145-automate-meeting-summaries-with-google-drive-gemini-ai-and-google-docs/)
-
-
-docker run -d --name n8n -p 5678:5678 -e N8N_HOST=0.0.0.0 -e N8N_PORT=5678 -v ~/.n8n:/home/node/.n8n b57abeae1a4e

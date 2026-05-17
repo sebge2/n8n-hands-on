@@ -156,14 +156,14 @@ locals {
 }
 
 resource "aws_instance" "n8n" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
-  key_name               = aws_key_pair.n8n_key.key_name
-  vpc_security_group_ids = [aws_security_group.n8n_sg.id]
-  subnet_id = aws_subnet.main_public_subnet.id
-  associate_public_ip_address = true
-  user_data = local.user_data_rendered
-  tags = var.tags
+  ami                           = data.aws_ami.ubuntu.id
+  instance_type                 = var.instance_type
+  key_name                      = aws_key_pair.n8n_key.key_name
+  vpc_security_group_ids        = [aws_security_group.n8n_sg.id]
+  subnet_id                     = aws_subnet.main_public_subnet.id
+  associate_public_ip_address   = true
+  user_data                     = local.user_data_rendered
+  tags                          = var.tags
 
   root_block_device {
     volume_size           = 30

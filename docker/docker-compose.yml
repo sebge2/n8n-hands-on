@@ -72,6 +72,7 @@ services:
       - POSTGRES_DB
     volumes:
       - postgres_storage:/var/lib/postgresql/data
+      - /home/ubuntu/n8n-data/db:/docker-entrypoint-initdb.d
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
       interval: 5s
