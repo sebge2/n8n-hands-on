@@ -276,14 +276,15 @@ resource "aws_instance" "n8n" {
 # }
 
 
-resource "aws_route53_zone" "main" {
-  name = var.domain_name
-  tags = var.tags
-}
+# Commented because the AWS DNS server changes every time the instance is re-created
+# resource "aws_route53_zone" "main" {
+#   name = var.domain_name
+#   tags = var.tags
+# }
 
 resource "aws_route53_record" "n8n_dns" {
   count   = var.create_dns_record ? 1 : 0
-  zone_id = aws_route53_zone.main.zone_id
+  zone_id = var.aws_zone_id
   name    = var.domain_name
   type    = "A"
   ttl     = 300

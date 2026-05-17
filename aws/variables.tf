@@ -28,6 +28,11 @@ variable "aws_secondary_availability_zone" {
   type        = string
 }
 
+variable "aws_zone_id" {
+  default = "Zone ID in route 53"
+  type = string
+}
+
 variable "main_ip_cidr" {
   type    = string
   default = "10.0.1.0/24"
