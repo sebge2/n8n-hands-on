@@ -9,7 +9,3 @@ output "public_ip" {
 output "ssh_command" {
   value     = "ssh -i ${var.private_key_path} ubuntu@${aws_instance.n8n.public_ip}"
 }
-
-output "ns_servers" {
-  value = aws_route53_zone.main.name_servers
-}

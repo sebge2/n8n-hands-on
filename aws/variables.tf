@@ -1,7 +1,3 @@
-variable "default_resource_name" {
-  default = "n8n-hands-on"
-}
-
 variable "tags" {
   description = "Tags to add on resources"
   default     = {
@@ -87,31 +83,16 @@ variable "postgresql_password" {
   type = string
 }
 
-variable "n8n_user_firstname" {
-  type = string
-  default = "John"
-}
-
-variable "n8n_user_lastname" {
-  type = string
-  default = "Doe"
-}
-
-variable "n8n_user_email" {
-  type = string
-  default = "john.doe@acme.com"
-}
-
-variable "n8n_user_password" {
-  type = string
-  description = "Password bcrypt encrypted (default: password)"
-  default = "$2a$12$TLw1.nLtM8AvFyL5wJ3In.2GQTdg6nuSHAd0gx4a33ZEupNehCXLC"
-}
-
 variable "n8n_user_auth_token" {
   type = string
   description = "Token to authenticate the runner"
   default = "UtBmyq60zzq6MlUvSRXEbRuky"
+}
+
+variable "n8n_encryption_key" {
+  type = string
+  description = "Key used to encrypt date"
+  default = "hQU7nbNIz6p1YlBdQT925RwP"
 }
 
 variable "ollama_api_key" {

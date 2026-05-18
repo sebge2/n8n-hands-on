@@ -139,11 +139,8 @@ locals {
     POSTGRES_USER                     = var.postgresql_user
     POSTGRES_PASSWORD                 = var.postgresql_password
 
-    N8N_INSTANCE_OWNER_EMAIL          = var.n8n_user_email
-    N8N_INSTANCE_OWNER_FIRST_NAME     = var.n8n_user_firstname
-    N8N_INSTANCE_OWNER_LAST_NAME      = var.n8n_user_lastname
-    N8N_INSTANCE_OWNER_PASSWORD_HASH  = var.n8n_user_password
     N8N_RUNNERS_AUTH_TOKEN            = var.n8n_user_auth_token
+    N8N_ENCRYPTION_KEY                = var.n8n_encryption_key
 
     DOMAIN_NAME                       = var.domain_name
 
