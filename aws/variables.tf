@@ -63,6 +63,7 @@ variable "local_domain" {
 variable "key_name" {
   type        = string
   description = "SSH key pair name"
+  default = "n8n"
 }
 
 variable "domain_name" {
@@ -81,6 +82,7 @@ variable "postgresql_user" {
 
 variable "postgresql_password" {
   type = string
+  default = "4jCS4yX[FFu:jGf3P9Q>TqS~"
 }
 
 variable "n8n_user_auth_token" {
