@@ -50,7 +50,8 @@ resource "google_compute_instance" "n8n" {
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-12"
-      size  = 30 # 30 Go
+      size  = 50 # Go
+      type  = "pd-ssd" # Plus rapide que pd-standard
     }
   }
 
@@ -75,5 +76,17 @@ resource "google_compute_instance" "n8n" {
       private_key = tls_private_key.n8n-keypair.private_key_pem
       host        = self.network_interface[0].access_config[0].nat_ip
     }
+  }
+}
+
+resource "google_compute_firewall" "n8n_firewall" {
+  name    = "allow-n8n-and-web"
+  network = "default"
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = var.tags
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22", "5678"]
   }
 }
