@@ -9,6 +9,13 @@ In case of an error on provisioning:
 cat /var/log/cloud-init-output.log
 ````
 
+### GCP Provisioning
+
+In case of an error on provisioning:
+````
+cat /var/log/syslog | grep startup-script
+````
+
 
 ### Hashing password
 ````
