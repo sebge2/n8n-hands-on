@@ -20,9 +20,24 @@ variable "instance_type" {
   default     = "e2-medium"
 }
 
+variable "public_key_path" {
+  type    = string
+  default = "~/.ssh/n8n.pem"
+}
+
+variable "private_key_path" {
+  type    = string
+  default = "~/.ssh/n8n.key"
+}
+
 variable "domain_name" {
   type        = string
   description = "Fully-qualified domain name for the n8n instance and the AWS-managed hosted zone (e.g. n8n.example.com). Delegate this name from the parent zone via NS records."
+}
+
+variable "ssh_user" {
+  type = string
+  description = "User of the GCP machine"
 }
 
 variable "postgresql_user" {

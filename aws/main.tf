@@ -168,11 +168,11 @@ resource "aws_instance" "n8n" {
   }
 
   provisioner "remote-exec" {
-    inline = ["mkdir -p /home/ubuntu/n8n-data"]
+    inline = ["mkdir -p /home/${var.ssh_user}/n8n-data"]
 
     connection {
       type        = "ssh"
-      user        = "ubuntu"
+      user        = var.ssh_user
       private_key = tls_private_key.n8n-keypair.private_key_pem
       host        = self.public_ip
     }
@@ -180,11 +180,11 @@ resource "aws_instance" "n8n" {
 
   provisioner "file" {
     source      = "${path.module}/../n8n-data"
-    destination = "/home/ubuntu/"
+    destination = "/home/${var.ssh_user}/"
 
     connection {
       type        = "ssh"
-      user        = "ubuntu"
+      user        = var.ssh_user
       private_key = tls_private_key.n8n-keypair.private_key_pem
       host        = self.public_ip
     }

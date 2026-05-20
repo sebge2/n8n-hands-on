@@ -75,6 +75,12 @@ variable "create_dns_record" {
   default = true
 }
 
+variable "ssh_user" {
+  type = string
+  description = "User of the EC2 instance"
+  default = "ubuntu"
+}
+
 variable "postgresql_user" {
   type = string
   default = "admin"
