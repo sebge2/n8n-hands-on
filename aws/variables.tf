@@ -46,12 +46,12 @@ variable "instance_type" {
 
 variable "public_key_path" {
   type    = string
-  default = "~/.ssh/n8n.pem"
+  default = "~/.ssh/n8n-aws.pem"
 }
 
 variable "private_key_path" {
   type    = string
-  default = "~/.ssh/n8n.key"
+  default = "~/.ssh/n8n-aws.key"
 }
 
 variable "local_domain" {

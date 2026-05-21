@@ -145,6 +145,8 @@ locals {
     DOMAIN_NAME                       = var.domain_name
 
     OLLAMA_API_KEY                    = var.ollama_api_key
+
+    OS_USER                           = var.ssh_user
   })
 
   user_data_rendered = templatefile("${path.module}/templates/user_data.sh.tmpl", {
@@ -165,17 +167,6 @@ resource "aws_instance" "n8n" {
   root_block_device {
     volume_size           = 30
     delete_on_termination = true
-  }
-
-  provisioner "remote-exec" {
-    inline = ["mkdir -p /home/${var.ssh_user}/n8n-data"]
-
-    connection {
-      type        = "ssh"
-      user        = var.ssh_user
-      private_key = tls_private_key.n8n-keypair.private_key_pem
-      host        = self.public_ip
-    }
   }
 
   provisioner "file" {
