@@ -23,12 +23,12 @@ apt-get install -y git curl docker-ce docker-ce-cli containerd.io docker-buildx-
 
 # TODO check if this part is needed if the official way already install docker-compose-plugin
 # Install Docker Compose v2 plugin
-mkdir -p ~/.docker/cli-plugins
-curl -SL https://github.com/docker/compose/releases/download/v2.24.2/docker-compose-linux-x86_64 \
-  -o ~/.docker/cli-plugins/docker-compose
-chmod +x ~/.docker/cli-plugins/docker-compose
-sudo mkdir -p /usr/local/lib/docker/cli-plugins
-sudo mv ~/.docker/cli-plugins/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose
+#mkdir -p ~/.docker/cli-plugins
+#curl -SL https://github.com/docker/compose/releases/download/v2.24.2/docker-compose-linux-x86_64 \
+#  -o ~/.docker/cli-plugins/docker-compose
+#chmod +x ~/.docker/cli-plugins/docker-compose
+#sudo mkdir -p /usr/local/lib/docker/cli-plugins
+#sudo mv ~/.docker/cli-plugins/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose
 
 # Enable and start Docker
 systemctl enable docker

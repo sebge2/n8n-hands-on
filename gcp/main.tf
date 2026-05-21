@@ -33,6 +33,8 @@ locals {
     DOMAIN_NAME                       = var.domain_name
 
     OLLAMA_API_KEY                    = var.ollama_api_key
+
+    OS_USER                           = var.ssh_user
   })
 
   startup_script = templatefile("${path.module}/templates/user_data.sh.tmpl", {
