@@ -53,7 +53,7 @@ resource "google_compute_instance" "n8n" {
     initialize_params {
       image = "debian-cloud/debian-12"
       size  = 50 # Go
-      type  = "pd-ssd" # Plus rapide que pd-standard
+      type  = "pd-ssd"
     }
   }
 
@@ -82,7 +82,7 @@ resource "google_compute_instance" "n8n" {
 }
 
 resource "google_compute_firewall" "n8n_firewall" {
-  name    = "allow-n8n-and-web"
+  name    = "allow-n8n-and-ssh"
   network = "default"
   source_ranges = ["0.0.0.0/0"]
   target_tags   = var.tags
