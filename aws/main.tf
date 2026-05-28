@@ -142,7 +142,7 @@ data "aws_ami" "ubuntu" {
 }
 
 locals {
-  env_rendered = templatefile("${path.module}/templates/env.tmpl", {
+  env_rendered = templatefile("${path.module}/../templates/env.tmpl", {
     POSTGRES_USER                     = var.postgresql_user
     POSTGRES_PASSWORD                 = var.postgresql_password
 
@@ -156,14 +156,14 @@ locals {
     OS_USER                           = var.ssh_user
   })
 
-  user_data_rendered = templatefile("${path.module}/templates/user_data.sh.tmpl", {
+  user_data_rendered = templatefile("${path.module}/../templates/user_data.sh.tmpl", {
     env_file     = replace(local.env_rendered, "$", "\\$")
 
     nginx_config = local.nginx_rendered
     ssh_user     = var.ssh_user
   })
 
-  nginx_rendered = templatefile("${path.module}/templates/n8n.conf.tmpl", {
+  nginx_rendered = templatefile("${path.module}/../templates/n8n.conf.tmpl", {
     DOMAIN_NAME                       = var.domain_name
   })
 }
