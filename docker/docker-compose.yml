@@ -5,11 +5,11 @@ volumes:
   qdrant_storage:
 
 networks:
-  demo:
+  workflow:
 
 x-n8n: &service-n8n
   image: n8nio/n8n:latest
-  networks: ['demo']
+  networks: ['workflow']
   environment:
     - DB_TYPE=postgresdb
     - DB_POSTGRESDB_HOST=postgres
@@ -39,7 +39,7 @@ x-n8n: &service-n8n
 x-ollama: &service-ollama
   image: ollama/ollama:latest
   container_name: ollama
-  networks: ['demo']
+  networks: ['workflow']
   restart: unless-stopped
   ports:
     - 11434:11434
@@ -50,7 +50,7 @@ x-ollama: &service-ollama
 
 x-init-ollama: &init-ollama
   image: ollama/ollama:latest
-  networks: ['demo']
+  networks: ['workflow']
   container_name: ollama-pull-llama
   volumes:
     - ollama_storage:/root/.ollama
@@ -66,7 +66,7 @@ services:
     image: postgres:16-alpine
     container_name: postgres
     hostname: postgres
-    networks: ['demo']
+    networks: ['workflow']
     restart: unless-stopped
     environment:
       - POSTGRES_USER
@@ -96,7 +96,7 @@ services:
   task-runners:
     image: sebge2/n8n-runner:latest
     container_name: n8n-runners
-    networks: ['demo']
+    networks: ['workflow']
     environment:
       - N8N_RUNNERS_TASK_BROKER_URI=http://n8n:5679
       - N8N_RUNNERS_AUTH_TOKEN=${N8N_RUNNERS_AUTH_TOKEN}
@@ -104,11 +104,38 @@ services:
     depends_on:
       - n8n
 
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /home/${OS_USER}/n8n-data/nginx/conf.d:/etc/nginx/conf.d
+      - /home/${OS_USER}/n8n-data/nginx/certs:/etc/letsencrypt
+      - /home/${OS_USER}/n8n-data/nginx/certbot:/var/www/certbot
+    networks:
+      - workflow
+    depends_on:
+      - n8n
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - /home/${OS_USER}/n8n-data/nginx/certs:/etc/letsencrypt
+      - /home/${OS_USER}/n8n-data/nginx/certbot:/var/www/certbot
+    # Cette commande vérifie toutes les 12h si le certificat doit être renouvelé
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - workflow
+      
   qdrant:
     image: qdrant/qdrant
     hostname: qdrant
     container_name: qdrant
-    networks: ['demo']
+    networks: ['workflow']
     restart: unless-stopped
     ports:
       - 6333:6333

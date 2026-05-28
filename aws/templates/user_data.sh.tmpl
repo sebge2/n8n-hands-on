@@ -26,8 +26,8 @@ cat <<EOT > .env
 ${env_file}
 EOT
 
-mkdir -p /home/${ssh_user}/n8n-data/nginx
-cat <<'EOF' > /home/${ssh_user}/n8n-data/nginx/n8n.conf
+mkdir -p /home/${ssh_user}/n8n-data/nginx/conf.d
+cat <<'EOF' > /home/${ssh_user}/n8n-data/nginx/conf.d/n8n.conf
 ${nginx_config}
 EOF
 
