@@ -26,5 +26,11 @@ cat <<EOT > .env
 ${env_file}
 EOT
 
+mkdir -p /home/${ssh_user}/n8n-data/nginx
+cat <<'EOF' > /home/${ssh_user}/n8n-data/nginx/n8n.conf
+${nginx_config}
+EOF
+
+
 # Start n8n using the 'cpu' profile
 docker compose --profile cpu up -d

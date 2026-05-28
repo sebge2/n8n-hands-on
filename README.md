@@ -54,7 +54,7 @@ sudo docker exec postgres pg_dump -U admin n8n > /home/ubuntu/dump.sql
 
 Download dump:
 ````
-scp -i ~/.ssh/n8n.key ubuntu@adresse_ip_serveur:/home/ubuntu/dump.sql ~/dump.sql
+scp -i ~/.ssh/n8n-aws.key ubuntu@adresse_ip_serveur:/home/ubuntu/dump.sql ~/dump.sql
 ````
 
 

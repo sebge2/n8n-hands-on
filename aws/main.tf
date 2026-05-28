@@ -150,7 +150,14 @@ locals {
   })
 
   user_data_rendered = templatefile("${path.module}/templates/user_data.sh.tmpl", {
-    env_file = replace(local.env_rendered, "$", "\\$")
+    env_file     = replace(local.env_rendered, "$", "\\$")
+
+    nginx_config = local.nginx_rendered
+    ssh_user     = var.ssh_user
+  })
+
+  nginx_rendered = templatefile("${path.module}/templates/n8n.conf.tmpl", {
+    DOMAIN_NAME                       = var.domain_name
   })
 }
 
