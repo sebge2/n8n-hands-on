@@ -73,6 +73,14 @@ If you don't have an original SSL certificate (fullchain.pem and privkey.pem), y
 - Files are generated in `/etc/letsencrypt/live/`
 
 
+### Display AWS SES Credentials
+
+````
+terraform output ses_access_key_id
+terraform output ses_secret_access_key
+````
+
+
 ## Configuration
 
 ### Google Auth

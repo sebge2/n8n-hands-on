@@ -71,6 +71,11 @@ variable "domain_name" {
   description = "Fully-qualified domain name for the n8n instance and the AWS-managed hosted zone (e.g. n8n.example.com). Delegate this name from the parent zone via NS records."
 }
 
+variable "main_domain_name" {
+  type        = string
+  description = "Root domain name for the n8n instance and the AWS-managed hosted zone (e.g. example.com). Delegate this name from the parent zone via NS records."
+}
+
 variable "create_dns_record" {
   default = true
 }
